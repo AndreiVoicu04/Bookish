@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 poetry.lock
-migrations
+migrations/versions

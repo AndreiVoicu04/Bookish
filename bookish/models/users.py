@@ -1,14 +1,15 @@
 from bookish.app import db
 
 class Users(db.Model):
+
     __tablename__ = 'Users'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_name = db.Column(db.String(80), unique=True, nullable=False)
-    user_password = db.Column(db.String(255), nullable=False)
+    user_name = db.Column(db.String(), unique=True, nullable=False)
+    user_password = db.Column(db.String(), nullable=False)
 
     # relations
-    checked_out_books = db.relationship('Checked_Out_Books', backref='Users', uselist=False)
+   # checked_out_books = db.relationship('Checked_Out_Books', backref='Users', uselist=False)
 
     def __init__(self, user_name, user_password):
         self.user_name = user_name
