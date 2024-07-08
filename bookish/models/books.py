@@ -6,7 +6,7 @@ class Books(db.Model):
     book_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     book_title = db.Column(db.String(255))
     book_author = db.Column(db.String(255))
-    book_ISBN = db.Column(db.String(255))
+    book_ISBN = db.Column(db.String(255), unique=True)
     book_no = db.Column(db.Integer)
     book_available = db.Column(db.Integer)
 

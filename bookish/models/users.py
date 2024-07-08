@@ -20,7 +20,7 @@ class Users(db.Model):
         self.user_password = user_password
 
     def __repr__(self):
-        return f"{self.user_id}: {self.user_name}, {self.user_password}"
+        return f"{self.user_id}: {self.user_name}, {self.user_password}, {self.user_token}, {self.user_token_expire}"
 
     def serialize(self):
         return {
@@ -30,21 +30,6 @@ class Users(db.Model):
             'user_token': self.user_token,
             'user_token_expire': self.user_token_expire,
         }
-
-    @staticmethod
-    def get_user_by_token(token):
-        """
-        :param token:
-        :return: true -> token valid
-                 false -> token expired/invalid
-        """
-
-        all_users = Users.query.all()
-        for user in all_users:
-            if user.user_token == token and user.user_token_expire < datetime.datetime.now():
-                return True
-        else:
-            return False
 
     def create_token(self):
         """
