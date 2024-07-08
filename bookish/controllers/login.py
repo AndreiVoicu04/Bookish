@@ -1,5 +1,5 @@
 from flask import request
-from bookish.Services.user_handling_services import user_signin, user_signup
+from bookish.Services.user_handling_services import user_signin, user_signup, user_signout
 from bookish.models.example import Example
 from bookish.models.books import Books
 from bookish.models.users import Users
@@ -16,7 +16,7 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e)}
+            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
         print(data)
         return user_signin(data['user_name'], data['user_password'])
 
@@ -25,7 +25,15 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e)}
+            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
 
         return user_signup(data['user_name'], data['user_password'])
 
+    @app.route('/login/signout', methods=['GET'])
+    def handle_signout():
+        try:
+            data = request.get_json()
+        except Exception as e:
+            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
+
+        return user_signout(data['auth_token'])

@@ -13,5 +13,6 @@ def library_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e)}
+            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
+
         return add_book(data)

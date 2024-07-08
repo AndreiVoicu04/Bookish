@@ -20,3 +20,12 @@ def check_auth_token(token):
         if user.user_token == token and user.user_token_expire > datetime.datetime.now():
             return True
     return False
+
+
+def check_if_authenticated(auth_token):
+    try:
+        authenticated_status = check_auth_token(auth_token)
+        if not authenticated_status:
+            raise {"status": "Error", "error_message": "Not authenticated", "UI_message": "Not authenticated"}
+    except Exception as e:
+        raise {"status": "Error", "error_message": str(e), "UI_message": "Could not check token"}
