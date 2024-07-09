@@ -16,8 +16,7 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
-        print(data)
+            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
         return user_signin(data['user_name'], data['user_password'])
 
     @app.route('/login/signup', methods=['POST'])
@@ -25,7 +24,7 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
+            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
 
         return user_signup(data['user_name'], data['user_password'])
 
@@ -34,6 +33,6 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "UI_message": "Body must be JSON"}
+            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
 
         return user_signout(data['auth_token'])

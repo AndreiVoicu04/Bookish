@@ -5,11 +5,11 @@ from bookish.models.books import Books
 
 def list_all_users():
     try:
-        data = Users.query.all()
+        all_users = Users.query.all()
     except Exception as e:
         return {"status": "Error", "error_message": str(e)}
 
-    return [user.serialize() for user in data]
+    return all_users
 
 
 def list_all_books():
@@ -17,7 +17,7 @@ def list_all_books():
         all_books = Books.query.all()
     except Exception as e:
         return {"status": "Error", "error_message": str(e)}
-    return sorted([book.serialize() for book in all_books],key=lambda book: book['book_title'])
+    return all_books
 
 
 def list_books_by_title(auth_token, book_title):
@@ -27,11 +27,11 @@ def list_books_by_title(auth_token, book_title):
         return e
 
     try:
-        all_books = Books.query.all()
+        all_books_by_title = Books.query.all()
     except Exception as e:
         return {"status": "Error", "error_message": str(e)}
 
-    return sorted([book.serialize() for book in all_books if book.book_title == book_title], key=lambda book: book['book_title'])
+    return all_books_by_title
 
 
 def list_books_by_author(auth_token, book_author):
@@ -41,7 +41,16 @@ def list_books_by_author(auth_token, book_author):
         return e
 
     try:
-        data = Books.query.all()
+        all_books_by_author = Books.query.all()
     except Exception as e:
         return {"status": "Error", "error_message": str(e)}
-    return sorted([book.serialize() for book in data if book.book_author == book_author],key=lambda book: book['book_title'])
+    return all_books_by_author
+
+def placeholder(books, order, limit):
+    if order == 'ASC':
+        books = sorted(books, key=lambda book: book.book_title)
+    else:
+        books = sorted(books, key=lambda book: book.book_title, reverse=True)
+    if limit == -1:
+        return books
+    return books[:limit]

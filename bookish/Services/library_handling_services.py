@@ -10,6 +10,7 @@ def add_book(data):
         check_if_authenticated(auth_token)
     except Exception as e:
         return e
+    print("here")
     book = Books(book_title=data['book_title'], book_author=data['book_author'],
                  book_ISBN=data['book_ISBN'], book_no=data['book_no'], book_available=data['book_available'])
 
@@ -18,4 +19,4 @@ def add_book(data):
         db.session.commit()
         return {"status": "Ok", "message": "Book added successfully"}
     except Exception as e:
-        return {"status": "Error", "error_message": str(e), "UI_message": "The book could not be added"}
+        return {"status": "Error", "error_message": str(e), "user_friendly": "The book could not be added"}
