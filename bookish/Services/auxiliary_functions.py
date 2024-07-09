@@ -4,7 +4,8 @@ from flask import request
 from bookish.models.users import Users
 from bookish.models.books import Books
 from bookish.models.checked_out_books import Checked_Out_Books
-
+from werkzeug.exceptions import HTTPException
+from bookish.error_handler import *
 
 def hashing_algorithm(string):
     return hashlib.md5(string.encode('utf-8')).hexdigest()
@@ -32,9 +33,9 @@ def check_if_authenticated(auth_token):
     try:
         authenticated_status = check_auth_token(auth_token)
         if not authenticated_status:
-            raise Exception({"status": "Error", "error_message": "Not authenticated", "user_friendly": "Not authenticated"})
+            raise Exception('Token expired')
     except Exception as e:
-        raise Exception({"status": "Error", "error_message": str(e), "user_friendly": "Could not check token"})
+        raise e
 
 def return_user_by_user_name(user_name):
     all_users = Users.query.all()
