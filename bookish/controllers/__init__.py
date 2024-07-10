@@ -1,6 +1,6 @@
-from bookish.controllers.Login_Controller import login_routes
-from bookish.controllers.Library_Controller import library_routes
-from bookish.controllers.Return_Controller import return_routes
+from bookish.controllers.login_controller import login_routes
+from bookish.controllers.library_controller import library_routes
+from bookish.controllers.return_controller import return_routes
 
 
 def register_controllers(app):

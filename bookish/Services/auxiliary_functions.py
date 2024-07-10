@@ -16,14 +16,13 @@ def date_format(string):
 
 def check_auth_token(auth_token):
     """
-    :param token:
+    :param auth_token:
     :return: true -> token valid
              false -> token expired/invalid
     """
 
-    all_users = Users.query.all()
-    current_user = next(user for user in all_users if user.user_name == auth_token['user_name'])
-    if current_user.user_token == auth_token['user_token']:
+    current_user = return_user_by_user_name(auth_token['user_name'])
+    if current_user is not None and current_user.user_token == auth_token['user_token']:
         if current_user.user_token_expire > datetime.datetime.now():
             return True
     return False
@@ -33,9 +32,9 @@ def check_if_authenticated(auth_token):
     try:
         authenticated_status = check_auth_token(auth_token)
         if not authenticated_status:
-            raise Exception('Token expired')
+            raise werkzeug.exceptions.BadRequest("User not authenticated")
     except Exception as e:
-        raise e
+        raise werkzeug.exceptions.BadRequest(str(e))
 
 def return_user_by_user_name(user_name):
     all_users = Users.query.all()
@@ -52,10 +51,6 @@ def return_book_by_ISBN(book_ISBN):
 def request_parser(request):
     book_author = request.args.get('book_author')
     book_title = request.args.get('book_title')
-    order = "ASC"
-    if request.args.get("order") is not None:
-        order = request.args.get("order")
-    limit = -1
-    if request.args.get("limit") is not None:
-        limit = request.args.get("limit")
+    order = request.args.get("order", default= "ASC")
+    limit = request.args.get("limit", default= -1)
     return {"book_author": book_author, "book_title": book_title, "order": order, "limit": limit}

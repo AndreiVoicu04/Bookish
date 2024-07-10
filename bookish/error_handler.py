@@ -1,11 +1,14 @@
-from flask import jsonify
+from flask import jsonify,request,Flask
+import json
 from werkzeug.exceptions import HTTPException
 import werkzeug
-
-class CustomHttpException(HTTPException):
-    def __init__(self, e):
-        super().__init__()
-        self.e = e
-def handle_bad_request(e):
+def handle_http_exception(e):
+    response = e.get_response()
     print(e)
-    return 'bad xczczxrequest!', 403
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+    })
+    response.content_type = 'application/json'
+    return response

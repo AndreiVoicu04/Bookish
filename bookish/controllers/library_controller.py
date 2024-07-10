@@ -5,7 +5,7 @@ from bookish.models.users import Users
 from bookish.models.checked_out_books import Checked_Out_Books
 from bookish.models import db
 from bookish.Services.library_handling_services import add_book,borrow_book
-
+import werkzeug
 
 
 def library_routes(app):
@@ -14,7 +14,9 @@ def library_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
+            raise werkzeug.exceptions.BadRequest("Body must be JSON")
+        auth_token = data['auth_token']
+        check_if_authenticated(auth_token)
 
         return add_book(data)
 
@@ -23,7 +25,9 @@ def library_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
+            raise werkzeug.exceptions.BadRequest("Body must be JSON")
+        auth_token = data['auth_token']
+        check_if_authenticated(auth_token)
         return borrow_book(data)
 
 

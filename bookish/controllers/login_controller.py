@@ -4,7 +4,7 @@ from bookish.models.example import Example
 from bookish.models.books import Books
 from bookish.models.users import Users
 from bookish.models.checked_out_books import Checked_Out_Books
-
+import werkzeug
 
 def login_routes(app):
     @app.route('/login/healthcheck')
@@ -16,7 +16,7 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
+            raise werkzeug.exceptions.BadRequest("Body must be JSON")
         return user_signin(data['user_name'], data['user_password'])
 
     @app.route('/login/signup', methods=['POST'])
@@ -24,7 +24,7 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
+            raise werkzeug.exceptions.BadRequest("Body must be JSON")
 
         return user_signup(data['user_name'], data['user_password'])
 
@@ -33,6 +33,6 @@ def login_routes(app):
         try:
             data = request.get_json()
         except Exception as e:
-            return {"status": "Error", "error_message": str(e), "user_friendly": "Body must be JSON"}
+            raise werkzeug.exceptions.BadRequest("Body must be JSON")
 
         return user_signout(data['auth_token'])
